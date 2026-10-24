@@ -1,0 +1,117 @@
+@model CeCursos.Models.CourseViewModel
+@{
+    ViewData["Title"] = Model.FullName;
+    ViewData["BodyClass"] = "course-detail-page";
+    var category = Model.Category.ToLowerInvariant();
+    var categoryIcon = category.Contains("matem")
+        ? "/assets/icon-matematica-20px.svg"
+        : category.Contains("natureza") || category.Contains("ciências")
+            ? "/assets/icon-ciencias-natureza-20px.svg"
+            : category.Contains("sustentabilidade")
+                ? "/assets/icon-sustentabilidade-20px.svg"
+                : category.Contains("linguagens")
+                    ? "/assets/icon-linguagens-20px.svg"
+                    : null;
+}
+
+<section class="course-detail-hero page-container" aria-labelledby="course-title">
+    <div class="course-detail-copy">
+        <span class="course-subject">
+            @if (categoryIcon is not null)
+            {
+                <img src="@categoryIcon" alt="" />
+            }
+            @Model.Category
+        </span>
+        <h1 id="course-title">@Model.FullName</h1>
+        <div class="course-detail-meta" role="group" aria-label="Informações principais">
+            <p>
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M7 2v3m10-3v3M4 9h16M5 4h14a1 1 0 0 1 1 1v14H4V5a1 1 0 0 1 1-1Z" /></svg>
+                <span><strong>Início do curso:</strong> @(Model.AvailabilityDate?.ToString("dd/MM/yyyy") ?? "A definir")</span>
+            </p>
+            <p>
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 3 19 6v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6l7-3Zm-3 9 2 2 4-4" /></svg>
+                <span><strong>Certificação:</strong> SESI</span>
+            </p>
+        </div>
+        <a class="course-enroll-button" data-course-enroll asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id">
+            Matricule-se <span aria-hidden="true">→</span>
+        </a>
+    </div>
+
+    <figure class="course-video-preview">
+        <img src="/assets/video-thumb.png" alt="Profissionais da indústria em uma atividade técnica" />
+        <span class="course-video-play" aria-hidden="true"></span>
+        <figcaption id="course-video-caption">Vídeo de apresentação <span>Em breve</span></figcaption>
+    </figure>
+</section>
+
+<section class="course-benefits page-container" aria-label="Diferenciais do curso">
+    <article class="course-benefit">
+        <img src="/assets/01-certificacao-bege.svg" alt="" />
+        <h2>Certificação SESI</h2>
+        <p>Formação com certificado reconhecido no mercado industrial.</p>
+    </article>
+    <article class="course-benefit">
+        <img src="/assets/02-professores-bege.svg" alt="" />
+        <h2>Professores especialistas</h2>
+        <p>Aprenda com profissionais que conhecem os desafios do setor.</p>
+    </article>
+    <article class="course-benefit">
+        <img src="/assets/03-suporte-bege.svg" alt="" />
+        <h2>Suporte contínuo</h2>
+        <p>Conte com acompanhamento durante toda a sua jornada.</p>
+    </article>
+    <article class="course-benefit">
+        <img src="/assets/04-flexibilidade-bege.svg" alt="" />
+        <h2>Flexibilidade</h2>
+        <p>Estude no formato e nos horários que combinam com sua rotina.</p>
+    </article>
+</section>
+
+<section class="course-detail-content page-container" aria-label="Detalhes do curso">
+    <div class="course-about">
+        <p class="eyebrow eyebrow-red">Conheça a formação</p>
+        <h2>Sobre o curso</h2>
+        <p class="course-description">@Model.Description</p>
+
+        <h2 class="course-section-title">O que você vai aprender</h2>
+        <div class="course-learning-list">
+            @foreach (var lesson in Model.LessonDescriptions.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                <p>@lesson</p>
+            }
+        </div>
+    </div>
+
+    <aside class="course-summary" aria-labelledby="course-summary-title">
+        <p class="eyebrow eyebrow-red">Sua jornada</p>
+        <h2 id="course-summary-title">Informações do curso</h2>
+        <dl>
+            <div><dt>Carga horária</dt><dd>@Model.Workload horas</dd></div>
+            <div><dt>Modalidade</dt><dd>@Model.Modality</dd></div>
+            <div><dt>Status</dt><dd>@Model.Status</dd></div>
+            <div><dt>Público-alvo</dt><dd>@Model.TargetAudience</dd></div>
+        </dl>
+    </aside>
+</section>
+
+<section class="course-curriculum">
+    <div class="page-container">
+        <p class="eyebrow eyebrow-red">Conteúdo programático</p>
+        <h2>Uma jornada de aprendizado completa</h2>
+        <p class="course-curriculum-intro">Veja os módulos que fazem parte desta formação.</p>
+        <ol class="course-module-list">
+            @foreach (var module in Model.Modules.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                <li>@module</li>
+            }
+        </ol>
+        <a class="text-link" asp-controller="Catalog" asp-action="Index">Explorar outros cursos <span aria-hidden="true">→</span></a>
+    </div>
+</section>
+
+<a class="course-sticky-cta" data-course-sticky-cta asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id" aria-label="Acessar o curso @Model.FullName no ambiente de aprendizagem" hidden>
+    <span>Pronto para começar?</span>
+    <strong>Acessar curso <span aria-hidden="true">→</span></strong>
+</a>

@@ -1,0 +1,92 @@
+@model CeCursos.Models.CourseAvaViewModel
+@{
+    Layout = "_AvaLayout";
+    ViewData["Title"] = Model.CourseTitle;
+    var firstTopic = Model.Sections.First().Topics.First();
+}
+
+<div class="ava-shell" data-ava-shell>
+    <aside class="ava-sidebar" id="ava-sidebar" aria-label="Navegação do curso">
+        <div class="ava-sidebar-toolbar">
+            <a class="ava-back-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.CourseId" aria-label="Voltar para a página do curso">
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m15 18-6-6 6-6M9 12h11" /></svg>
+                <span>Voltar ao curso</span>
+            </a>
+            <button class="ava-sidebar-toggle" type="button" data-ava-collapse aria-label="Recolher navegação do curso" aria-expanded="true" aria-controls="ava-sidebar">
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m14 18-6-6 6-6" /></svg>
+            </button>
+        </div>
+
+        <div class="ava-course-summary">
+            <span class="ava-certificate-label">Certificação SESI</span>
+            <h1>@Model.CourseTitle</h1>
+            <p>Ambiente Virtual de Aprendizagem</p>
+        </div>
+
+        <div class="ava-search">
+            <label for="ava-topic-search">Buscar conteúdo</label>
+            <div class="ava-search-control">
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="10.8" cy="10.8" r="6.3" /><path d="m15.5 15.5 4.2 4.2" /></svg>
+                <input id="ava-topic-search" type="search" placeholder="Buscar tópico" autocomplete="off" data-ava-search />
+            </div>
+        </div>
+
+        <nav class="ava-topic-navigation" aria-label="Tópicos do curso">
+            @for (var sectionIndex = 0; sectionIndex < Model.Sections.Count; sectionIndex++)
+            {
+                var learningSection = Model.Sections[sectionIndex];
+                <details class="ava-module" open data-ava-module>
+                    <summary>@learningSection.Title</summary>
+                    <div class="ava-module-topics">
+                        @for (var topicIndex = 0; topicIndex < learningSection.Topics.Count; topicIndex++)
+                        {
+                            var topic = learningSection.Topics[topicIndex];
+                            var isSelected = sectionIndex == 0 && topicIndex == 0;
+                            <button class="ava-topic@(isSelected ? " is-active" : string.Empty)" type="button"
+                                    data-ava-topic
+                                    data-ava-section="@learningSection.Title"
+                                    data-ava-title="@topic.Title"
+                                    data-ava-content="@topic.Content"
+                                    aria-pressed="@(isSelected ? "true" : "false")">
+                                <span class="ava-topic-indicator" aria-hidden="true"></span>
+                                <span>@topic.Title</span>
+                            </button>
+                        }
+                    </div>
+                </details>
+            }
+            <p class="ava-no-results" data-ava-no-results hidden>Nenhum tópico encontrado.</p>
+        </nav>
+
+        <div class="ava-sidebar-footer">
+            <span>@Model.Sections.Sum(section => section.Topics.Count) tópicos neste curso</span>
+        </div>
+    </aside>
+
+    <button class="ava-expand-sidebar" type="button" data-ava-expand aria-label="Mostrar navegação do curso" aria-expanded="false" aria-controls="ava-sidebar" hidden>
+        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m9 18 6-6-6-6" /></svg>
+    </button>
+    <button class="ava-sidebar-backdrop" type="button" data-ava-backdrop aria-label="Fechar navegação do curso" hidden></button>
+
+    <main class="ava-main" id="main-content" tabindex="-1">
+        <div class="ava-main-topline">
+            <span>SESI INDÚSTRIA <span aria-hidden="true">/</span> AMBIENTE DE APRENDIZAGEM</span>
+            <a asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.CourseId">Sobre o curso</a>
+        </div>
+
+        <article class="ava-lesson" aria-labelledby="ava-lesson-title">
+            <div class="ava-banner">
+                <img src="/assets/banner-ava.png" alt="" />
+                <span class="ava-banner-brand" aria-hidden="true">SESI</span>
+            </div>
+            <header class="ava-lesson-heading">
+                <p data-ava-section-title>Introdução</p>
+                <h2 id="ava-lesson-title" data-ava-title-display>@firstTopic.Title</h2>
+            </header>
+            <div class="ava-lesson-content" aria-live="polite">
+                <h3>Conteúdo da aula</h3>
+                <p data-ava-content-display>@firstTopic.Content</p>
+            </div>
+        </article>
+    </main>
+</div>

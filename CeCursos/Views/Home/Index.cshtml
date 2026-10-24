@@ -1,8 +1,156 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model CeCursos.Models.LandingPageViewModel
+@{
+    ViewData["Title"] = "Aprenda e avance";
+    ViewData["BodyClass"] = "home-page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <div class="hero-content page-container">
+        <p class="eyebrow">Educação que move a indústria</p>
+        <h1>Impulsione sua carreira na indústria</h1>
+        <p class="hero-copy">Amplie seus conhecimentos com excelência na melhor plataforma de estudos da indústria brasileira.</p>
+        <a class="button button-light" asp-controller="Catalog" asp-action="Index">
+            Conhecer cursos <span aria-hidden="true">→</span>
+        </a>
+    </div>
+</section>
+
+<section class="section courses-section" aria-labelledby="featured-title">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow eyebrow-red">Aprenda no seu ritmo</p>
+            <h2 id="featured-title">Principais cursos</h2>
+        </div>
+    </div>
+
+    @if (Model.FeaturedCourses.Count == 0)
+    {
+        <div class="empty-state page-container">
+            <h3>Os cursos estarão disponíveis em breve</h3>
+            <p>Estamos preparando conteúdos para você avançar na sua carreira.</p>
+        </div>
+    }
+    else
+    {
+        <div class="carousel-shell course-carousel page-container" data-carousel>
+            <div class="carousel-track course-track" id="featured-courses" role="region" aria-roledescription="carrossel" aria-label="Cursos em destaque" tabindex="0">
+                @foreach (var course in Model.FeaturedCourses)
+                {
+                    <article class="course-slide" role="group" aria-roledescription="slide" aria-label="@course.FullName">
+                        <a class="course-slide-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id" aria-label="Ver curso @course.FullName">
+                            <img class="course-slide-image" src="@course.PresentationImage" alt="" loading="lazy" />
+                            <span class="course-slide-shade" aria-hidden="true"></span>
+                            <span class="course-slide-content">
+                                <span class="course-slide-category"><span class="course-category-mark" aria-hidden="true"></span>@course.Category</span>
+                                <span class="course-slide-workload">@course.Workload h</span>
+                                <span class="course-slide-title">@course.FullName</span>
+                                <span class="course-slide-description">@course.Description</span>
+                            </span>
+                        </a>
+                    </article>
+                }
+                <a class="course-slide all-courses-slide" asp-controller="Catalog" asp-action="Index">
+                    <span>Todos os cursos <span aria-hidden="true">→</span></span>
+                </a>
+            </div>
+            <div class="carousel-footer">
+                <a class="button button-outline-dark" asp-controller="Catalog" asp-action="Index">Ver todos os cursos</a>
+                <div class="carousel-controls" role="group" aria-label="Controles de cursos em destaque">
+                    <button class="carousel-arrow" type="button" data-carousel-previous aria-label="Cursos anteriores" aria-controls="featured-courses">
+                        <img src="/assets/arrow-navigation.svg" alt="" aria-hidden="true" />
+                    </button>
+                    <button class="carousel-arrow carousel-arrow-next" type="button" data-carousel-next aria-label="Próximos cursos" aria-controls="featured-courses">
+                        <img src="/assets/arrow-navigation-1.svg" alt="" aria-hidden="true" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+<section class="impact-section reveal" aria-labelledby="impact-title">
+    <div class="page-container impact-layout">
+        <div class="impact-intro">
+            <p class="eyebrow eyebrow-red">Educação que gera resultados</p>
+            <h2 id="impact-title">Impacto transformador</h2>
+            <p>Resultados que demonstram o impacto da educação profissional na indústria.</p>
+        </div>
+        <div class="impact-content">
+            <div class="impact-stat">
+                <strong>25.000+</strong>
+                <span>Profissionais capacitados</span>
+            </div>
+            <div class="impact-stat">
+                <strong>500+</strong>
+                <span>Empresas parceiras</span>
+            </div>
+            <div class="impact-benefits">
+                <article class="impact-benefit">
+                    <img src="/assets/01-certificacao-red.svg" alt="" aria-hidden="true" />
+                    <p>Cursos com certificação reconhecida pelo mercado industrial.</p>
+                </article>
+                <article class="impact-benefit">
+                    <img src="/assets/02-professores-red.svg" alt="" aria-hidden="true" />
+                    <p>Professores reconhecidos por sua excelência no mercado.</p>
+                </article>
+                <article class="impact-benefit">
+                    <img src="/assets/03-suporte-red.svg" alt="" aria-hidden="true" />
+                    <p>Acompanhamento online durante toda a jornada de aprendizagem.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section reveal" aria-labelledby="testimonials-title">
+    <div class="page-container">
+        <p class="eyebrow">Depoimentos</p>
+        <div class="section-heading testimonials-heading">
+            <h2 id="testimonials-title">Quem fez recomenda</h2>
+        </div>
+        <div class="carousel-shell testimonial-carousel" data-carousel>
+            <div class="carousel-track testimonial-track" id="course-testimonials" role="region" aria-roledescription="carrossel" aria-label="Depoimentos de alunos" tabindex="0">
+                @foreach (var testimonial in Model.Testimonials)
+                {
+                    <article class="testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de @testimonial.Name">
+                        <p class="testimonial-quote">“@testimonial.Quote”</p>
+                        <div class="testimonial-author">
+                            <strong>@testimonial.Name</strong>
+                            <span>@testimonial.Role</span>
+                        </div>
+                        <div class="testimonial-stars" role="img" aria-label="5 de 5 estrelas">
+                            @for (var star = 0; star < 5; star++)
+                            {
+                                <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+            <div class="carousel-controls testimonial-controls" role="group" aria-label="Controles de depoimentos">
+                <button class="carousel-arrow carousel-arrow-light" type="button" data-carousel-previous aria-label="Depoimentos anteriores" aria-controls="course-testimonials">
+                    <img src="/assets/arrow-navigation.svg" alt="" aria-hidden="true" />
+                </button>
+                <button class="carousel-arrow carousel-arrow-next carousel-arrow-light" type="button" data-carousel-next aria-label="Próximos depoimentos" aria-controls="course-testimonials">
+                    <img src="/assets/arrow-navigation-1.svg" alt="" aria-hidden="true" />
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ready-section reveal" aria-labelledby="ready-title">
+    <div class="page-container ready-layout">
+        <div class="ready-copy">
+            <p class="eyebrow">Sua jornada começa agora</p>
+            <h2 id="ready-title">Pronto para transformar sua carreira?</h2>
+            <p>Junte-se a milhares de profissionais que já estão transformando a indústria através dos nossos cursos. Invista no seu futuro hoje mesmo!</p>
+            <a class="button button-light" asp-controller="Catalog" asp-action="Index">Matricule-se <span aria-hidden="true">→</span></a>
+        </div>
+        <figure class="video-preview">
+            <img src="/assets/video-thumb.png" alt="Profissionais da indústria conversam ao lado de equipamentos em uma fábrica." loading="lazy" />
+            <span class="video-play" aria-hidden="true">▶</span>
+            <figcaption>Vídeo de apresentação em breve</figcaption>
+        </figure>
+    </div>
+</section>

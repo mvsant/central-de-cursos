@@ -1,0 +1,31 @@
+# Build output
+bin/
+obj/
+artifacts/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET local tooling and generated files
+project.lock.json
+project.fragment.lock.json
+*.binlog
+
+# Local-only secrets and environment overrides
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+
+# Test and coverage output
+TestResults/
+coverage/
+coverage.*
+
+# OS-generated files
+.DS_Store
+Thumbs.db

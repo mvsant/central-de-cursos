@@ -1,49 +1,78 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CeCursos</title>
+    <title>@ViewData["Title"] - SESI Indústria</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CeCursos.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CeCursos</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+<body class="@ViewData["BodyClass"]">
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Navegação principal">
+            <a class="brand" asp-controller="Home" asp-action="Index" aria-label="SESI Indústria — início">
+                <img class="brand-logo brand-logo-light" src="/assets/logo-sesi-industria-white.svg" alt="" />
+                <img class="brand-logo brand-logo-primary" src="/assets/logo-sesi-industria-primary.svg" alt="" />
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-navigation">
+                <span class="visually-hidden">Abrir menu</span>
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="primary-navigation">
+                <a asp-controller="Home" asp-action="Index">Início</a>
+                <a asp-controller="Catalog" asp-action="Index">Cursos</a>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="sobre">Sobre</a>
+                <span class="nav-disabled" title="Área do aluno em breve">Área do aluno</span>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CeCursos - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main role="main">
+        @RenderBody()
+    </main>
+    <footer class="site-footer" id="sobre">
+        <div class="footer-inner page-container">
+            <div class="footer-contact">
+                <a class="brand brand-footer" asp-controller="Home" asp-action="Index" aria-label="SESI Indústria — início">
+                    <img src="/assets/logo-sesi-industria-white.svg" alt="" />
+                </a>
+                <span>contato@sesiindustria.com.br</span>
+                <span>Av. Paulista, 1313</span>
+            </div>
+            <nav class="footer-column" aria-label="Navegação do rodapé">
+                <h2>Navegação</h2>
+                <a asp-controller="Home" asp-action="Index">Início</a>
+                <a asp-controller="Catalog" asp-action="Index">Certificação</a>
+                <a asp-controller="Catalog" asp-action="Index">Cursos</a>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="sobre">Sobre</a>
+                <a href="#sobre">Blog</a>
+            </nav>
+            <div class="footer-column">
+                <h2>Cursos populares</h2>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-busca="Aplicações Web">Desenvolvimento de Aplicações Web</a>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-busca="Banco de Dados">Banco de Dados e SQL</a>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-busca="Ciência de Dados">Introdução à Ciência de Dados</a>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-busca="Projetos">Gestão de Projetos Ágeis</a>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-busca="Interfaces">Design de Interfaces</a>
+            </div>
+            <nav class="footer-column" aria-label="Suporte">
+                <h2>Suporte</h2>
+                <a href="#sobre">Termos de Uso</a>
+                <a href="#sobre">Política de Privacidade</a>
+                <a href="mailto:contato@sesiindustria.com.br">Fale Conosco</a>
+                <a href="#sobre">Trabalhe Conosco</a>
+                <a href="#sobre">Central de Ajuda</a>
+            </nav>
+            <div class="footer-bottom">
+                <span class="copyright"><img src="/assets/logo-sesi-industria-white.svg" alt="" /> Todos os direitos reservados.</span>
+                <div class="social-links" role="group" aria-label="Redes sociais">
+                    <a href="https://www.linkedin.com/" aria-label="LinkedIn"><img src="/assets/icon-linkedIn-24px.svg" alt="" /></a>
+                    <a href="https://www.instagram.com/" aria-label="Instagram"><img src="/assets/icon-instagram-24px.svg" alt="" /></a>
+                    <a href="https://www.facebook.com/" aria-label="Facebook"><img src="/assets/icon-facebook-24px.svg" alt="" /></a>
+                </div>
+                <span>&copy; @DateTime.Now.Year SESI Indústria</span>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

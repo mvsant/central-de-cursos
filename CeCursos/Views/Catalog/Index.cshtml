@@ -1,0 +1,90 @@
+﻿@model CeCursos.Models.CourseCatalogViewModel
+@{
+    ViewData["Title"] = "Cursos";
+}
+
+<section class="page-banner">
+    <div class="page-container">
+        <p class="eyebrow">Conhecimento para sua jornada</p>
+        <h1>Encontre seu próximo curso</h1>
+        <p>Explore formações criadas para desenvolver habilidades importantes para a indústria.</p>
+    </div>
+</section>
+
+<section class="section page-container">
+    <form class="course-filters" method="get" asp-controller="Catalog" asp-action="Index">
+        <label class="filter-search">
+            <span>Buscar curso</span>
+            <input type="search" name="busca" value="@Model.Search" placeholder="Digite o nome do curso" />
+        </label>
+        <label>
+            <span>Categoria</span>
+            <select name="categoria">
+                <option value="">Todas</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category" selected="@(Model.Category == category)">@category</option>
+                }
+            </select>
+        </label>
+        <label>
+            <span>Modalidade</span>
+            <select name="modalidade">
+                <option value="">Todas</option>
+                @foreach (var modality in Model.Modalities)
+                {
+                    <option value="@modality" selected="@(Model.Modality == modality)">@modality</option>
+                }
+            </select>
+        </label>
+        <label>
+            <span>Status</span>
+            <select name="status">
+                <option value="">Todos</option>
+                @foreach (var status in Model.Statuses)
+                {
+                    <option value="@status" selected="@(Model.Status == status)">@status</option>
+                }
+            </select>
+        </label>
+        <button class="button button-red filter-submit" type="submit">Buscar cursos</button>
+    </form>
+
+    <div class="catalog-result-heading">
+        <h2>Cursos disponíveis</h2>
+        <span>@Model.Courses.Count curso(s)</span>
+    </div>
+
+    @if (Model.Courses.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>Nenhum curso encontrado</h3>
+            <p>Tente alterar os filtros para encontrar outras opções.</p>
+            <a class="text-link" asp-controller="Catalog" asp-action="Index">Limpar filtros</a>
+        </div>
+    }
+    else
+    {
+        <div class="course-grid">
+            @foreach (var course in Model.Courses)
+            {
+                <article class="course-card">
+                    <a class="course-image-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id" aria-label="Ver curso @course.FullName">
+                        <img class="course-image" src="@course.PresentationImage" alt="" loading="lazy" />
+                    </a>
+                    <div class="course-card-content">
+                        <div class="course-card-meta">
+                            <span class="category-tag">@course.Category</span>
+                            <span>@course.Workload h</span>
+                        </div>
+                        <h3><a asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">@course.FullName</a></h3>
+                        <p>@course.Description</p>
+                        <a class="course-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">
+                            Ver detalhes <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>
