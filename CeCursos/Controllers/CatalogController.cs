@@ -101,13 +101,26 @@ public class CatalogController(CecursosDbContext context) : Controller
         {
             new()
             {
-                Title = "Introdução",
+                Title = "1. Introdução",
                 Topics =
                 [
                     new CourseAvaTopicViewModel
                     {
-                        Title = "Boas-vindas",
+                        Title = "1.1 Introdução",
+                        Heading = "Introdução",
                         Content = course.Description
+                    },
+                    new CourseAvaTopicViewModel
+                    {
+                        Title = "1.2 Boas práticas",
+                        Heading = "Boas práticas",
+                        Content = lessonDescriptions.FirstOrDefault() ?? course.Description
+                    },
+                    new CourseAvaTopicViewModel
+                    {
+                        Title = "1.3 Extras",
+                        Heading = "Extras",
+                        Content = "Consulte os materiais complementares disponíveis para aprofundar os conceitos desta aula."
                     }
                 ]
             }
@@ -118,6 +131,14 @@ public class CatalogController(CecursosDbContext context) : Controller
 
         for (var index = 0; index < modules.Length; index++)
         {
+            var moduleTitle = modules[index];
+            var moduleNumberSeparator = moduleTitle.IndexOf(". ", StringComparison.Ordinal);
+            if (moduleNumberSeparator > 0 &&
+                int.TryParse(moduleTitle[..moduleNumberSeparator], out _))
+            {
+                moduleTitle = moduleTitle[(moduleNumberSeparator + 2)..];
+            }
+
             var content = index < lessonDescriptions.Length
                 ? lessonDescriptions[index]
                 : "O conteúdo deste módulo será disponibilizado em breve.";
@@ -131,7 +152,7 @@ public class CatalogController(CecursosDbContext context) : Controller
 
             sections.Add(new CourseAvaSectionViewModel
             {
-                Title = modules[index],
+                Title = $"{index + 2}. {moduleTitle}",
                 Topics =
                 [
                     new CourseAvaTopicViewModel
@@ -156,6 +177,9 @@ public class CatalogController(CecursosDbContext context) : Controller
                         return new CourseAvaTopicViewModel
                         {
                             Title = separator > 0
+                                ? description[..separator].Trim()
+                                : "Material complementar",
+                            Heading = separator > 0
                                 ? description[..separator].Trim()
                                 : "Material complementar",
                             Content = separator > 0

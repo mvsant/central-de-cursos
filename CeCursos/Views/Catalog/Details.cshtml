@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = Model.FullName;
     ViewData["BodyClass"] = "course-detail-page";
+    var modules = Model.Modules.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var lessonDescriptions = Model.LessonDescriptions.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     var category = Model.Category.ToLowerInvariant();
     var categoryIcon = category.Contains("matem")
         ? "/assets/icon-matematica-20px.svg"
@@ -34,8 +36,9 @@
                 <span><strong>Certificação:</strong> SESI</span>
             </p>
         </div>
-        <a class="course-enroll-button" data-course-enroll asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id">
-            Matricule-se <span aria-hidden="true">→</span>
+        <a class="course-enroll-button arrow-roll-trigger" data-course-enroll asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id">
+            <span>Matricule-se</span>
+            <span class="course-enroll-arrow arrow-roll" aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" /></span>
         </a>
     </div>
 
@@ -71,47 +74,138 @@
 
 <section class="course-detail-content page-container" aria-label="Detalhes do curso">
     <div class="course-about">
-        <p class="eyebrow eyebrow-red">Conheça a formação</p>
         <h2>Sobre o curso</h2>
         <p class="course-description">@Model.Description</p>
+    </div>
 
-        <h2 class="course-section-title">O que você vai aprender</h2>
-        <div class="course-learning-list">
-            @foreach (var lesson in Model.LessonDescriptions.Split('\n', StringSplitOptions.RemoveEmptyEntries))
-            {
-                <p>@lesson</p>
-            }
+    <div class="course-detail-accordions">
+        <details class="course-detail-accordion">
+            <summary>Módulos</summary>
+            <div class="course-detail-accordion-content">
+                <ol class="course-lesson-list">
+                    @for (var index = 0; index < modules.Length; index++)
+                    {
+                        <li>
+                            <h3>@modules[index]</h3>
+                            @if (index < lessonDescriptions.Length)
+                            {
+                                @foreach (var lesson in lessonDescriptions[index].Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                                {
+                                    <p>@lesson</p>
+                                }
+                            }
+                        </li>
+                    }
+                </ol>
+            </div>
+        </details>
+        <details class="course-detail-accordion">
+            <summary>Aulas online e avaliações</summary>
+            <div class="course-detail-accordion-content">
+                <p>As aulas são realizadas online para você estudar no seu ritmo. Ao longo do curso, atividades e avaliações ajudam a acompanhar seu aprendizado.</p>
+                <p>Carga horária: @Model.Workload horas. Modalidade: @Model.Modality.</p>
+            </div>
+        </details>
+        <details class="course-detail-accordion">
+            <summary>Dúvidas frequentes</summary>
+            <div class="course-detail-accordion-content">
+                <h3>Como acesso as aulas?</h3>
+                <p>Após a matrícula, acesse o ambiente de aprendizagem pelo botão “Matricule-se”.</p>
+                <h3>Recebo certificado?</h3>
+                <p>Sim. A certificação SESI é concedida após a conclusão dos requisitos do curso.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<section class="course-testimonials-section" aria-labelledby="course-testimonials-title">
+    <div class="course-testimonials-inner">
+        <div class="course-testimonials-heading">
+            <p class="eyebrow">Depoimentos</p>
+            <h2 id="course-testimonials-title">Quem fez recomenda</h2>
+        </div>
+        <div class="carousel-shell course-testimonial-carousel" data-carousel>
+            <div class="carousel-track course-testimonial-track" id="course-testimonials" role="region" aria-roledescription="carrossel" aria-label="Depoimentos de alunos" tabindex="0">
+                <article class="course-testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de Lucas Pereira">
+                    <p>“A experiência do curso foi incrível! As aulas foram muito bem estruturadas e o cronograma foi cuidadosamente planejado, facilitando muito o aprendizado.”</p>
+                    <strong>Lucas Pereira</strong>
+                    <span>Analista na Empresa X</span>
+                    <div class="course-testimonial-rating" role="img" aria-label="5 de 5 estrelas">
+                        @for (var star = 0; star < 5; star++)
+                        {
+                            <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                        }
+                    </div>
+                </article>
+                <article class="course-testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de Mariana Costa">
+                    <p>“Concluir o curso foi uma jornada enriquecedora. As aulas eram dinâmicas e o horário foi organizado para maximizar nosso tempo de estudo.”</p>
+                    <strong>Mariana Costa</strong>
+                    <span>Gestora na Empresa X</span>
+                    <div class="course-testimonial-rating" role="img" aria-label="5 de 5 estrelas">
+                        @for (var star = 0; star < 5; star++)
+                        {
+                            <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                        }
+                    </div>
+                </article>
+                <article class="course-testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de Thiago Almeida">
+                    <p>“O curso superou minhas expectativas! As aulas eram bem elaboradas e o planejamento do horário ajudou a manter o foco e a produtividade.”</p>
+                    <strong>Thiago Almeida</strong>
+                    <span>Técnico na Empresa X</span>
+                    <div class="course-testimonial-rating" role="img" aria-label="5 de 5 estrelas">
+                        @for (var star = 0; star < 5; star++)
+                        {
+                            <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                        }
+                    </div>
+                </article>
+                <article class="course-testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de Fernanda Silva">
+                    <p>“Finalizar o curso foi uma experiência motivadora. As aulas foram muito bem preparadas e o cronograma foi ideal para o aprendizado.”</p>
+                    <strong>Fernanda Silva</strong>
+                    <span>Analista na Empresa X</span>
+                    <div class="course-testimonial-rating" role="img" aria-label="5 de 5 estrelas">
+                        @for (var star = 0; star < 5; star++)
+                        {
+                            <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                        }
+                    </div>
+                </article>
+                <article class="course-testimonial-card" role="group" aria-roledescription="slide" aria-label="Depoimento de Gabriel Santos">
+                    <p>“A conclusão do curso foi uma etapa muito gratificante. As aulas eram bem organizadas e o horário foi pensado para facilitar nosso aprendizado.”</p>
+                    <strong>Gabriel Santos</strong>
+                    <span>Analista na Empresa X</span>
+                    <div class="course-testimonial-rating" role="img" aria-label="5 de 5 estrelas">
+                        @for (var star = 0; star < 5; star++)
+                        {
+                            <img src="/assets/star.svg" alt="" aria-hidden="true" />
+                        }
+                    </div>
+                </article>
+            </div>
+            <div class="carousel-controls course-testimonial-controls" role="group" aria-label="Controles de depoimentos">
+                <button class="carousel-arrow arrow-roll-trigger" type="button" data-carousel-previous aria-label="Depoimentos anteriores" aria-controls="course-testimonials">
+                    <img class="arrow-roll" src="/assets/arrow-navigation.svg" alt="" aria-hidden="true" />
+                </button>
+                <button class="carousel-arrow arrow-roll-trigger" type="button" data-carousel-next aria-label="Próximos depoimentos" aria-controls="course-testimonials">
+                    <img class="arrow-roll" src="/assets/arrow-navigation-1.svg" alt="" aria-hidden="true" />
+                </button>
+            </div>
         </div>
     </div>
-
-    <aside class="course-summary" aria-labelledby="course-summary-title">
-        <p class="eyebrow eyebrow-red">Sua jornada</p>
-        <h2 id="course-summary-title">Informações do curso</h2>
-        <dl>
-            <div><dt>Carga horária</dt><dd>@Model.Workload horas</dd></div>
-            <div><dt>Modalidade</dt><dd>@Model.Modality</dd></div>
-            <div><dt>Status</dt><dd>@Model.Status</dd></div>
-            <div><dt>Público-alvo</dt><dd>@Model.TargetAudience</dd></div>
-        </dl>
-    </aside>
 </section>
 
-<section class="course-curriculum">
-    <div class="page-container">
-        <p class="eyebrow eyebrow-red">Conteúdo programático</p>
-        <h2>Uma jornada de aprendizado completa</h2>
-        <p class="course-curriculum-intro">Veja os módulos que fazem parte desta formação.</p>
-        <ol class="course-module-list">
-            @foreach (var module in Model.Modules.Split('\n', StringSplitOptions.RemoveEmptyEntries))
-            {
-                <li>@module</li>
-            }
-        </ol>
-        <a class="text-link" asp-controller="Catalog" asp-action="Index">Explorar outros cursos <span aria-hidden="true">→</span></a>
+<section class="course-contact-section" aria-labelledby="course-contact-title">
+    <div class="page-container course-contact-content">
+        <p class="eyebrow">PRECISA DE AJUDA PARA DECIDIR?</p>
+        <h2 id="course-contact-title">Fale com a gente</h2>
+        <a class="course-contact-link arrow-roll-trigger" href="mailto:contato@sesiindustria.com.br">
+            <span>Mandar uma mensagem</span>
+            <span class="arrow-roll" aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" /></span>
+        </a>
     </div>
 </section>
 
-<a class="course-sticky-cta" data-course-sticky-cta asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id" aria-label="Acessar o curso @Model.FullName no ambiente de aprendizagem" hidden>
-    <span>Pronto para começar?</span>
-    <strong>Acessar curso <span aria-hidden="true">→</span></strong>
+<a class="course-sticky-cta arrow-roll-trigger" data-course-sticky-cta asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id" aria-label="Matricule-se no curso @Model.FullName" hidden>
+    <span>@Model.FullName</span>
+    <strong>Matricule-se <span class="arrow-roll" aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" /></span></strong>
 </a>

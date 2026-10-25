@@ -79,8 +79,8 @@
                         </div>
                         <h3><a asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">@course.FullName</a></h3>
                         <p>@course.Description</p>
-                        <a class="course-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">
-                            Ver detalhes <span aria-hidden="true">→</span>
+                        <a class="course-link arrow-roll-trigger" asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">
+                            Ver detalhes <span class="arrow-roll" aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" /></span>
                         </a>
                     </div>
                 </article>

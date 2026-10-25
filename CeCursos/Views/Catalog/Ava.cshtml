@@ -2,15 +2,16 @@
 @{
     Layout = "_AvaLayout";
     ViewData["Title"] = Model.CourseTitle;
-    var firstTopic = Model.Sections.First().Topics.First();
+    var firstTopic = Model.Sections.First().Topics.ElementAtOrDefault(1) ?? Model.Sections.First().Topics.First();
+    var firstTopicHeading = string.IsNullOrWhiteSpace(firstTopic.Heading) ? firstTopic.Title : firstTopic.Heading;
 }
 
 <div class="ava-shell" data-ava-shell>
     <aside class="ava-sidebar" id="ava-sidebar" aria-label="Navegação do curso">
         <div class="ava-sidebar-toolbar">
             <a class="ava-back-link" asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.CourseId" aria-label="Voltar para a página do curso">
-                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m15 18-6-6 6-6M9 12h11" /></svg>
-                <span>Voltar ao curso</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
+                <span class="visually-hidden">Voltar ao curso</span>
             </a>
             <button class="ava-sidebar-toggle" type="button" data-ava-collapse aria-label="Recolher navegação do curso" aria-expanded="true" aria-controls="ava-sidebar">
                 <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m14 18-6-6 6-6" /></svg>
@@ -18,16 +19,20 @@
         </div>
 
         <div class="ava-course-summary">
-            <span class="ava-certificate-label">Certificação SESI</span>
+            <span class="ava-certificate-label">Certificação</span>
             <h1>@Model.CourseTitle</h1>
-            <p>Ambiente Virtual de Aprendizagem</p>
+        </div>
+
+        <div class="ava-course-progress" role="progressbar" aria-label="Progresso do curso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="10">
+            <div class="ava-course-progress-track"><span></span></div>
+            <span>10%</span>
         </div>
 
         <div class="ava-search">
             <label for="ava-topic-search">Buscar conteúdo</label>
             <div class="ava-search-control">
+                <input id="ava-topic-search" type="search" autocomplete="off" data-ava-search />
                 <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="10.8" cy="10.8" r="6.3" /><path d="m15.5 15.5 4.2 4.2" /></svg>
-                <input id="ava-topic-search" type="search" placeholder="Buscar tópico" autocomplete="off" data-ava-search />
             </div>
         </div>
 
@@ -35,17 +40,21 @@
             @for (var sectionIndex = 0; sectionIndex < Model.Sections.Count; sectionIndex++)
             {
                 var learningSection = Model.Sections[sectionIndex];
-                <details class="ava-module" open data-ava-module>
+                <details class="ava-module" open="@(sectionIndex == 0)" data-ava-module>
                     <summary>@learningSection.Title</summary>
                     <div class="ava-module-topics">
                         @for (var topicIndex = 0; topicIndex < learningSection.Topics.Count; topicIndex++)
                         {
                             var topic = learningSection.Topics[topicIndex];
-                            var isSelected = sectionIndex == 0 && topicIndex == 0;
+                            var isSelected = sectionIndex == 0 && topicIndex == 1;
+                            var topicState = sectionIndex == 0 && topicIndex == 0
+                                ? "completed"
+                                : isSelected ? "active" : "not-started";
                             <button class="ava-topic@(isSelected ? " is-active" : string.Empty)" type="button"
                                     data-ava-topic
-                                    data-ava-section="@learningSection.Title"
+                                    data-ava-state="@topicState"
                                     data-ava-title="@topic.Title"
+                                    data-ava-heading="@(string.IsNullOrWhiteSpace(topic.Heading) ? topic.Title : topic.Heading)"
                                     data-ava-content="@topic.Content"
                                     aria-pressed="@(isSelected ? "true" : "false")">
                                 <span class="ava-topic-indicator" aria-hidden="true"></span>
@@ -57,10 +66,6 @@
             }
             <p class="ava-no-results" data-ava-no-results hidden>Nenhum tópico encontrado.</p>
         </nav>
-
-        <div class="ava-sidebar-footer">
-            <span>@Model.Sections.Sum(section => section.Topics.Count) tópicos neste curso</span>
-        </div>
     </aside>
 
     <button class="ava-expand-sidebar" type="button" data-ava-expand aria-label="Mostrar navegação do curso" aria-expanded="false" aria-controls="ava-sidebar" hidden>
@@ -69,23 +74,24 @@
     <button class="ava-sidebar-backdrop" type="button" data-ava-backdrop aria-label="Fechar navegação do curso" hidden></button>
 
     <main class="ava-main" id="main-content" tabindex="-1">
-        <div class="ava-main-topline">
-            <span>SESI INDÚSTRIA <span aria-hidden="true">/</span> AMBIENTE DE APRENDIZAGEM</span>
-            <a asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.CourseId">Sobre o curso</a>
-        </div>
-
         <article class="ava-lesson" aria-labelledby="ava-lesson-title">
             <div class="ava-banner">
                 <img src="/assets/banner-ava.png" alt="" />
                 <span class="ava-banner-brand" aria-hidden="true">SESI</span>
             </div>
             <header class="ava-lesson-heading">
-                <p data-ava-section-title>Introdução</p>
-                <h2 id="ava-lesson-title" data-ava-title-display>@firstTopic.Title</h2>
+                <h2 id="ava-lesson-title" data-ava-title-display>@firstTopicHeading</h2>
             </header>
             <div class="ava-lesson-content" aria-live="polite">
-                <h3>Conteúdo da aula</h3>
                 <p data-ava-content-display>@firstTopic.Content</p>
+                <p>Acompanhe cada etapa com atenção e registre as dúvidas que surgirem. Relacionar as ideias apresentadas aos exemplos ajuda a compreender como os conceitos se aplicam na prática.</p>
+                <p>Organize o estudo em blocos curtos e faça pausas para revisar o que aprendeu. Retomar os pontos principais antes de avançar ajuda a construir uma compreensão mais consistente.</p>
+                <p>Use as atividades do curso para experimentar o conteúdo e perceber quais tópicos merecem uma nova leitura. Avance no seu ritmo e consulte os materiais sempre que necessário.</p>
+                <section class="ava-recommendations" aria-labelledby="ava-recommendations-title">
+                    <h3 id="ava-recommendations-title">Recomendações</h3>
+                    <p>Reserve horários específicos para estudar e mantenha suas anotações organizadas. Pratique cada tópico e retome os exemplos sempre que precisar consolidar o aprendizado.</p>
+                    <p>Ao concluir uma atividade, revise o resultado e identifique o que gostaria de explorar com mais profundidade nos próximos módulos.</p>
+                </section>
             </div>
         </article>
     </main>

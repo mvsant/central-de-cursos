@@ -1,11 +1,13 @@
 const navigationToggle = document.querySelector(".nav-toggle");
 const navigation = document.querySelector("#primary-navigation");
+const siteHeader = document.querySelector(".site-header");
 
 navigationToggle?.addEventListener("click", () => {
     const isExpanded = navigationToggle.getAttribute("aria-expanded") === "true";
     navigationToggle.setAttribute("aria-expanded", String(!isExpanded));
     navigationToggle.setAttribute("aria-label", isExpanded ? "Abrir menu" : "Fechar menu");
     navigation?.classList.toggle("is-open", !isExpanded);
+    siteHeader?.classList.toggle("is-menu-open", !isExpanded);
 });
 
 navigation?.querySelectorAll("a").forEach((link) => {
@@ -13,10 +15,10 @@ navigation?.querySelectorAll("a").forEach((link) => {
         navigation.classList.remove("is-open");
         navigationToggle?.setAttribute("aria-expanded", "false");
         navigationToggle?.setAttribute("aria-label", "Abrir menu");
+        siteHeader?.classList.remove("is-menu-open");
     });
 });
 
-const siteHeader = document.querySelector(".site-header");
 const updateHeader = () => {
     siteHeader?.classList.toggle("is-scrolled", window.scrollY > 20);
 };
@@ -96,7 +98,6 @@ const avaBackdrop = document.querySelector("[data-ava-backdrop]");
 const avaSearch = document.querySelector("[data-ava-search]");
 const avaTopics = [...document.querySelectorAll("[data-ava-topic]")];
 const avaTitle = document.querySelector("[data-ava-title-display]");
-const avaSectionTitle = document.querySelector("[data-ava-section-title]");
 const avaContent = document.querySelector("[data-ava-content-display]");
 
 if (avaShell instanceof HTMLElement &&
@@ -129,17 +130,19 @@ if (avaShell instanceof HTMLElement &&
 
     avaTopics.forEach((topic) => {
         topic.addEventListener("click", () => {
-            avaTopics.forEach((item) => {
-                const isSelected = item === topic;
-                item.setAttribute("aria-pressed", String(isSelected));
-                item.classList.toggle("is-active", isSelected);
+            const selectedIndex = avaTopics.indexOf(topic);
+            avaTopics.forEach((item, index) => {
+                const state = index < selectedIndex
+                    ? "completed"
+                    : index === selectedIndex ? "active" : "not-started";
+                item.dataset.avaState = state;
+                item.setAttribute("aria-pressed", String(index === selectedIndex));
+                item.classList.toggle("is-active", index === selectedIndex);
             });
 
+            topic.closest("details")?.setAttribute("open", "");
             if (avaTitle instanceof HTMLElement) {
-                avaTitle.textContent = topic.dataset.avaTitle ?? "";
-            }
-            if (avaSectionTitle instanceof HTMLElement) {
-                avaSectionTitle.textContent = topic.dataset.avaSection ?? "";
+                avaTitle.textContent = topic.dataset.avaHeading ?? topic.dataset.avaTitle ?? "";
             }
             if (avaContent instanceof HTMLElement) {
                 avaContent.textContent = topic.dataset.avaContent ?? "";
