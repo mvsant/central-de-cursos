@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CeCursos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b9a93cff204d01ffece6033627509c4660f7639")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6a4cc394b33b04ad4f1258aece3539774d81e83")]
 [assembly: System.Reflection.AssemblyProductAttribute("CeCursos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CeCursos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,11 +6,10 @@
 
 <section class="hero">
     <div class="hero-content page-container">
-        <p class="eyebrow">Educação que move a indústria</p>
         <h1>Impulsione sua carreira na indústria</h1>
         <p class="hero-copy">Amplie seus conhecimentos com excelência na melhor plataforma de estudos da indústria brasileira.</p>
         <a class="button button-light" asp-controller="Catalog" asp-action="Index">
-            Conhecer cursos <span aria-hidden="true">→</span>
+            Conhecer cursos <span aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" aria-hidden="true" /></span>
         </a>
     </div>
 </section>
@@ -41,7 +40,7 @@
                             <img class="course-slide-image" src="@course.PresentationImage" alt="" loading="lazy" />
                             <span class="course-slide-shade" aria-hidden="true"></span>
                             <span class="course-slide-content">
-                                <span class="course-slide-category"><span class="course-category-mark" aria-hidden="true"></span>@course.Category</span>
+                                <span class="course-slide-category"><span class="course-category-mark" aria-hidden="true"><img src="/assets/icon-@course.Category-20px.svg" alt="Icon"></span>@course.Category</span>
                                 <span class="course-slide-workload">@course.Workload h</span>
                                 <span class="course-slide-title">@course.FullName</span>
                                 <span class="course-slide-description">@course.Description</span>
@@ -71,9 +70,8 @@
 <section class="impact-section reveal" aria-labelledby="impact-title">
     <div class="page-container impact-layout">
         <div class="impact-intro">
-            <p class="eyebrow eyebrow-red">Educação que gera resultados</p>
             <h2 id="impact-title">Impacto transformador</h2>
-            <p>Resultados que demonstram o impacto da educação profissional na indústria.</p>
+            <p>Resultados que demonstram o sucesso da nossa metodologia de capacitação contínua para a indústria</p>
         </div>
         <div class="impact-content">
             <div class="impact-stat">
@@ -84,18 +82,29 @@
                 <strong>500+</strong>
                 <span>Empresas parceiras</span>
             </div>
+            <div class="impact-stat">
+                <strong>4.8/5</strong>
+                <span>Avaliação média</span>
+            </div>
+            <div class="impact-stat">
+                <strong>2.5M+</strong>
+                <span>Horas de capacitação</span>
+            </div>
             <div class="impact-benefits">
                 <article class="impact-benefit">
                     <img src="/assets/01-certificacao-red.svg" alt="" aria-hidden="true" />
-                    <p>Cursos com certificação reconhecida pelo mercado industrial.</p>
+                    <h4>Certificação SESI</h4>
+                    <p>Cursos com a melhor certificação do mercado industrial reconhecidos pelo SESI.</p>
                 </article>
                 <article class="impact-benefit">
                     <img src="/assets/02-professores-red.svg" alt="" aria-hidden="true" />
-                    <p>Professores reconhecidos por sua excelência no mercado.</p>
+                    <h4>Professores especialistas</h4>
+                    <p>Contamos com professores reconhecidos por sua excelência no mercado.</p>
                 </article>
                 <article class="impact-benefit">
                     <img src="/assets/03-suporte-red.svg" alt="" aria-hidden="true" />
-                    <p>Acompanhamento online durante toda a jornada de aprendizagem.</p>
+                    <h4>Suporte contínuo</h4>
+                    <p>Você não está sozinho!<br> Acompanhamento online durante todo o curso.</p>
                 </article>
             </div>
         </div>
@@ -139,13 +148,13 @@
     </div>
 </section>
 
-<section class="ready-section reveal" aria-labelledby="ready-title">
-    <div class="page-container ready-layout">
+<section class="ready-section" aria-labelledby="ready-title">
+    <div class="page-container ready-layout reveal">
         <div class="ready-copy">
             <p class="eyebrow">Sua jornada começa agora</p>
             <h2 id="ready-title">Pronto para transformar sua carreira?</h2>
             <p>Junte-se a milhares de profissionais que já estão transformando a indústria através dos nossos cursos. Invista no seu futuro hoje mesmo!</p>
-            <a class="button button-light" asp-controller="Catalog" asp-action="Index">Matricule-se <span aria-hidden="true">→</span></a>
+            <a class="button button-light" asp-controller="Catalog" asp-action="Index">Matricule-se <span aria-hidden="true"><img src="/assets/arrow-navigation-1.svg" alt="" aria-hidden="true" /></span></a>
         </div>
         <figure class="video-preview">
             <img src="/assets/video-thumb.png" alt="Profissionais da indústria conversam ao lado de equipamentos em uma fábrica." loading="lazy" />
