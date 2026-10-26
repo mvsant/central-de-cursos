@@ -62,12 +62,77 @@ document.querySelectorAll("[data-carousel]").forEach((carousel) => {
 });
 
 const revealSections = document.querySelectorAll(".reveal");
+const impactCounters = [...document.querySelectorAll(".impact-stat strong[data-count]")]
+    .filter((counter) => counter instanceof HTMLElement)
+    .map((counter) => {
+        const element = counter;
+        const target = Number(element.dataset.count);
+        const decimals = Number(element.dataset.countDecimals ?? 0);
+        const suffix = element.dataset.countSuffix ?? "";
+
+        element.textContent = `${new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        }).format(0)}${suffix}`;
+
+        return {
+            element,
+            target,
+            decimals,
+            suffix
+        };
+    });
+
+const animateImpactCounters = (section) => {
+    const counters = impactCounters.filter((counter) => section.contains(counter.element));
+    const transitionDurations = getComputedStyle(section).transitionDuration
+        .split(",")
+        .map((duration) => {
+            const value = Number.parseFloat(duration);
+            return duration.trim().endsWith("ms") ? value : value * 1000;
+        });
+    const duration = Math.max(...transitionDurations);
+
+    counters.forEach((counter) => {
+        const formatter = new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: counter.decimals,
+            maximumFractionDigits: counter.decimals
+        });
+        const render = (value) => {
+            counter.element.textContent = `${formatter.format(value)}${counter.suffix}`;
+        };
+
+        if (duration <= 0 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            render(counter.target);
+            return;
+        }
+
+        const startTime = performance.now();
+        const update = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const easedProgress = 1 - (1 - progress) ** 3;
+            render(counter.target * easedProgress);
+
+            if (progress < 1) {
+                window.requestAnimationFrame(update);
+            } else {
+                render(counter.target);
+            }
+        };
+
+        window.requestAnimationFrame(update);
+    });
+};
+
 if ("IntersectionObserver" in window) {
     document.documentElement.classList.add("reveal-ready");
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("is-visible");
+                if (entry.target.classList.contains("impact-section")) {
+                    animateImpactCounters(entry.target);
+                }
                 observer.unobserve(entry.target);
             }
         });
@@ -76,6 +141,10 @@ if ("IntersectionObserver" in window) {
     revealSections.forEach((section) => revealObserver.observe(section));
 } else {
     revealSections.forEach((section) => section.classList.add("is-visible"));
+    const impactSection = document.querySelector(".impact-section");
+    if (impactSection instanceof HTMLElement) {
+        animateImpactCounters(impactSection);
+    }
 }
 
 const enrollmentButton = document.querySelector("[data-course-enroll]");

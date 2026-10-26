@@ -317,7 +317,15 @@ select:focus-visible {
 }
 
 .button-light:hover {
-  background: #f7eeee;
+  background: var(--line);
+}
+
+.button-border{
+  border: .5px solid var(--line);
+}
+
+.button-border:hover{
+  border: .5px solid var(--muted);
 }
 
 .button-red {
@@ -518,9 +526,9 @@ select:focus-visible {
   overflow: hidden;
   border-radius: 6px;
   background: var(--brand-red-dark);
-  box-shadow: 0 8px 18px rgb(0 0 0 / 11%);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 6%);
   scroll-snap-align: start;
-  transition: transform .22s ease, box-shadow .22s ease;
+  transition: transform .18s ease, box-shadow .18s ease;
 }
 
 .course-track {
@@ -530,8 +538,8 @@ select:focus-visible {
 
 .course-slide:hover,
 .course-slide:focus-within {
-  transform: translateY(-7px);
-  box-shadow: 0 14px 24px rgb(0 0 0 / 18%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 9%);
 }
 
 .course-slide-link {
@@ -1013,8 +1021,8 @@ select:focus-visible {
 
 .social-links img {
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   filter: brightness(0) invert(1);
 }
 
@@ -1166,7 +1174,7 @@ select:focus-visible {
   gap: 8px;
   border-radius: 4px;
   padding: 5px 9px;
-  background: #fcd19c;
+  background: var(--category-chip-color, #fcd19c);
   color: #171717;
   font-size: 12px;
   font-weight: 700;
@@ -1216,6 +1224,10 @@ select:focus-visible {
 
 .course-detail-meta strong {
   font-weight: 700;
+}
+
+.cert-badge {
+  max-height: 26px;
 }
 
 .course-enroll-button {
@@ -1329,6 +1341,7 @@ select:focus-visible {
   width: 42px;
   height: 42px;
   margin-bottom: 12px;
+  border-radius: 8px;
 }
 
 .course-benefit h2 {
@@ -1351,6 +1364,12 @@ select:focus-visible {
   align-items: start;
   gap: 64px;
   padding-block: 42px 48px;
+}
+
+.course-about {
+  position: sticky;
+  top: 88px;
+  align-self: start;
 }
 
 .course-about h2,
@@ -1961,7 +1980,7 @@ body.course-detail-page.has-sticky-course-cta {
 .ava-banner {
   position: relative;
   overflow: hidden;
-  height: 106px;
+  height: 26vh;
   border-radius: 6px;
   background: #a62c21;
 }
@@ -1972,20 +1991,6 @@ body.course-detail-page.has-sticky-course-cta {
   height: 100%;
   object-fit: cover;
   object-position: center 56%;
-}
-
-.ava-banner-brand {
-  position: absolute;
-  top: 11px;
-  left: 12px;
-  border-radius: 2px;
-  padding: 1px 4px;
-  background: #fff;
-  color: var(--brand-red);
-  font-size: 10px;
-  font-style: italic;
-  font-weight: 850;
-  letter-spacing: -.07em;
 }
 
 .ava-lesson-heading {
@@ -2127,6 +2132,10 @@ body.course-detail-page.has-sticky-course-cta {
   .course-detail-content {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  .course-about {
+    position: static;
   }
 
   .course-benefits {

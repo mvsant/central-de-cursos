@@ -1,0 +1,13 @@
+<svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" fill="none">
+
+ <mask height="32" width="32" y="8" x="8" maskUnits="userSpaceOnUse" id="mask0_6026_5370">
+  <rect id="svg_1" fill="#D9D9D9" height="32" width="32" y="8" x="8"/>
+ </mask>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_2" fill="none" rx="8" height="48" width="48"/>
+  <g id="svg_3" mask="url(#mask0_6026_5370)">
+   <path id="svg_4" fill="#0C0C0D" d="m23.9988,34.461l-8.6667,-4.7076l0,-7.2307l-4.6153,-2.523l13.282,-7.2307l13.282,7.2307l0,9.5897l-2,0l0,-8.482l-2.6153,1.4153l0,7.2307l-8.6667,4.7076zm0,-9.528l9.1207,-4.9333l-9.1207,-4.9333l-9.1207,4.9333l9.1207,4.9333zm0,7.2514l6.6667,-3.6l0,-4.995l-6.6667,3.6386l-6.6667,-3.6386l0,4.995l6.6667,3.6z"/>
+  </g>
+ </g>
+</svg>
