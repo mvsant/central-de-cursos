@@ -18,7 +18,7 @@
 
 <section class="course-detail-hero page-container" aria-labelledby="course-title">
     <div class="course-detail-copy">
-        <span class="course-subject">
+        <span class="course-subject" style="--category-chip-color: @Model.CategoryChipColor">
             @if (categoryIcon is not null)
             {
                 <img src="@categoryIcon" alt="" />
@@ -28,12 +28,12 @@
         <h1 id="course-title">@Model.FullName</h1>
         <div class="course-detail-meta" role="group" aria-label="Informações principais">
             <p>
-                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M7 2v3m10-3v3M4 9h16M5 4h14a1 1 0 0 1 1 1v14H4V5a1 1 0 0 1 1-1Z" /></svg>
-                <span><strong>Início do curso:</strong> @(Model.AvailabilityDate?.ToString("dd/MM/yyyy") ?? "A definir")</span>
+                <img class="cert-badge" src="/assets/calendar-check-svgrepo-com.svg" alt="" />
+                <span>Início do curso:<strong> @(Model.AvailabilityDate?.ToString("dd/MM/yyyy") ?? "A definir") </strong></span>
             </p>
             <p>
-                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 3 19 6v5c0 4.4-3 8-7 10-4-2-7-5.6-7-10V6l7-3Zm-3 9 2 2 4-4" /></svg>
-                <span><strong>Certificação:</strong> SESI</span>
+                <img class="cert-badge" src="/assets/icon-certificacao-nobg.svg" alt="" />
+                <span>Certificação:<strong> SESI </strong></span>
             </p>
         </div>
         <a class="course-enroll-button arrow-roll-trigger" data-course-enroll asp-controller="Catalog" asp-action="Ava" asp-route-id="@Model.Id">
@@ -51,22 +51,22 @@
 
 <section class="course-benefits page-container" aria-label="Diferenciais do curso">
     <article class="course-benefit">
-        <img src="/assets/01-certificacao-bege.svg" alt="" />
+        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-certificacao-nobg.svg" alt="" />
         <h2>Certificação SESI</h2>
         <p>Formação com certificado reconhecido no mercado industrial.</p>
     </article>
     <article class="course-benefit">
-        <img src="/assets/02-professores-bege.svg" alt="" />
+        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-professores-nobg.svg" alt="" />
         <h2>Professores especialistas</h2>
         <p>Aprenda com profissionais que conhecem os desafios do setor.</p>
     </article>
     <article class="course-benefit">
-        <img src="/assets/03-suporte-bege.svg" alt="" />
+        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-suporte-nobg.svg" alt="" />
         <h2>Suporte contínuo</h2>
         <p>Conte com acompanhamento durante toda a sua jornada.</p>
     </article>
     <article class="course-benefit">
-        <img src="/assets/04-flexibilidade-bege.svg" alt="" />
+        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-flexibilidade-nobg.svg" alt="" />
         <h2>Flexibilidade</h2>
         <p>Estude no formato e nos horários que combinam com sua rotina.</p>
     </article>
@@ -118,7 +118,7 @@
     </div>
 </section>
 
-<section class="course-testimonials-section" aria-labelledby="course-testimonials-title">
+<section class="course-testimonials-section" style="background-color: @Model.CategoryChipColor" aria-labelledby="course-testimonials-title">
     <div class="course-testimonials-inner">
         <div class="course-testimonials-heading">
             <p class="eyebrow">Depoimentos</p>
