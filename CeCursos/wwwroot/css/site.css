@@ -520,6 +520,18 @@ select:focus-visible {
   background: var(--brand-red-dark);
   box-shadow: 0 8px 18px rgb(0 0 0 / 11%);
   scroll-snap-align: start;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.course-track {
+  margin-block: -10px;
+  padding-block: 10px;
+}
+
+.course-slide:hover,
+.course-slide:focus-within {
+  transform: translateY(-7px);
+  box-shadow: 0 14px 24px rgb(0 0 0 / 18%);
 }
 
 .course-slide-link {
@@ -574,22 +586,24 @@ select:focus-visible {
   border-radius: 2px;
   padding: 5px 8px;
   color: #1c1715;
-  background: #f6e7ce;
+  background: var(--category-chip-color, #f6e7ce);
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .course-category-mark {
+  display: inline-flex;
   width: 11px;
   height: 14px;
-  border-radius: 2px;
-  display: flex;
+  flex: 0 0 auto;
 }
 
-.course-category-mark span{
-  margin-top: 0px;
-  padding-bottom: 0;
+.course-category-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 
