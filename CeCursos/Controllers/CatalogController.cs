@@ -28,7 +28,7 @@ public class CatalogController(CecursosDbContext context) : Controller
         if (!string.IsNullOrWhiteSpace(categoria))
         {
             var category = categoria.Trim().ToLower();
-            query = query.Where(course => course.Category.ToLower() == category);
+            query = query.Where(course => course.Category.Name.ToLower() == category);
         }
 
         if (!string.IsNullOrWhiteSpace(modalidade))
@@ -45,10 +45,13 @@ public class CatalogController(CecursosDbContext context) : Controller
 
         var model = new CourseCatalogViewModel
         {
-            Courses = await query.OrderBy(course => course.FullName).ToListAsync(),
+            Courses = await query
+                .Include(course => course.Category)
+                .OrderBy(course => course.FullName)
+                .ToListAsync(),
             Categories = await context.Courses
                 .AsNoTracking()
-                .Select(course => course.Category)
+                .Select(course => course.Category.Name)
                 .Distinct()
                 .OrderBy(categoryName => categoryName)
                 .ToListAsync(),
@@ -78,6 +81,7 @@ public class CatalogController(CecursosDbContext context) : Controller
     {
         var course = await context.Courses
             .AsNoTracking()
+            .Include(item => item.Category)
             .FirstOrDefaultAsync(item => item.Id == id);
 
         return course is null ? NotFound() : View(course);

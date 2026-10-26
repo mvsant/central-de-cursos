@@ -74,7 +74,7 @@
                     </a>
                     <div class="course-card-content">
                         <div class="course-card-meta">
-                            <span style="background-color: @course.CategoryChipColor" class="category-tag">@course.Category</span>
+                            <span style="background-color: @course.Category.ChipColor" class="category-tag">@course.Category.Name</span>
                             <span>@course.Workload h</span>
                         </div>
                         <h3><a asp-controller="Catalog" asp-action="Details" asp-route-id="@course.Id">@course.FullName</a></h3>

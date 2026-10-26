@@ -4,26 +4,16 @@
     ViewData["BodyClass"] = "course-detail-page";
     var modules = Model.Modules.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     var lessonDescriptions = Model.LessonDescriptions.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-    var category = Model.Category.ToLowerInvariant();
-    var categoryIcon = category.Contains("matem")
-        ? "/assets/icon-matematica-20px.svg"
-        : category.Contains("natureza") || category.Contains("ciências")
-            ? "/assets/icon-ciencias-natureza-20px.svg"
-            : category.Contains("sustentabilidade")
-                ? "/assets/icon-sustentabilidade-20px.svg"
-                : category.Contains("linguagens")
-                    ? "/assets/icon-linguagens-20px.svg"
-                    : null;
 }
 
 <section class="course-detail-hero page-container" aria-labelledby="course-title">
     <div class="course-detail-copy">
-        <span class="course-subject" style="--category-chip-color: @Model.CategoryChipColor">
-            @if (categoryIcon is not null)
+        <span class="course-subject" style="--category-chip-color: @Model.Category.ChipColor">
+            @if (!string.IsNullOrWhiteSpace(Model.Category.IconImage))
             {
-                <img src="@categoryIcon" alt="" />
+                <img src="@Model.Category.IconImage" alt="" />
             }
-            @Model.Category
+            @Model.Category.Name
         </span>
         <h1 id="course-title">@Model.FullName</h1>
         <div class="course-detail-meta" role="group" aria-label="Informações principais">
@@ -51,22 +41,22 @@
 
 <section class="course-benefits page-container" aria-label="Diferenciais do curso">
     <article class="course-benefit">
-        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-certificacao-nobg.svg" alt="" />
+        <img style="background-color: @Model.Category.ChipColor" src="/assets/icon-certificacao-nobg.svg" alt="" />
         <h2>Certificação SESI</h2>
         <p>Formação com certificado reconhecido no mercado industrial.</p>
     </article>
     <article class="course-benefit">
-        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-professores-nobg.svg" alt="" />
+        <img style="background-color: @Model.Category.ChipColor" src="/assets/icon-professores-nobg.svg" alt="" />
         <h2>Professores especialistas</h2>
         <p>Aprenda com profissionais que conhecem os desafios do setor.</p>
     </article>
     <article class="course-benefit">
-        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-suporte-nobg.svg" alt="" />
+        <img style="background-color: @Model.Category.ChipColor" src="/assets/icon-suporte-nobg.svg" alt="" />
         <h2>Suporte contínuo</h2>
         <p>Conte com acompanhamento durante toda a sua jornada.</p>
     </article>
     <article class="course-benefit">
-        <img style="background-color: @Model.CategoryChipColor" src="/assets/icon-flexibilidade-nobg.svg" alt="" />
+        <img style="background-color: @Model.Category.ChipColor" src="/assets/icon-flexibilidade-nobg.svg" alt="" />
         <h2>Flexibilidade</h2>
         <p>Estude no formato e nos horários que combinam com sua rotina.</p>
     </article>
@@ -118,7 +108,7 @@
     </div>
 </section>
 
-<section class="course-testimonials-section" style="background-color: @Model.CategoryChipColor" aria-labelledby="course-testimonials-title">
+<section class="course-testimonials-section" style="background-color: @Model.Category.ChipColor" aria-labelledby="course-testimonials-title">
     <div class="course-testimonials-inner">
         <div class="course-testimonials-heading">
             <p class="eyebrow">Depoimentos</p>

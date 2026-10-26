@@ -12,6 +12,7 @@ public class HomeController(CecursosDbContext context) : Controller
     {
         var courses = await context.Courses
             .AsNoTracking()
+            .Include(course => course.Category)
             .OrderBy(course => course.Id)
             .ToListAsync();
 

@@ -30,7 +30,7 @@ public class CoursesController(CecursosDbContext context) : ControllerBase
         if (!string.IsNullOrWhiteSpace(categoria))
         {
             var valor = categoria.Trim().ToLower();
-            query = query.Where(c => c.Category.ToLower() == valor);
+            query = query.Where(c => c.Category.Name.ToLower() == valor);
         }
 
         if (!string.IsNullOrWhiteSpace(modalidade))
@@ -45,12 +45,14 @@ public class CoursesController(CecursosDbContext context) : ControllerBase
             query = query.Where(c => c.Status.ToLower() == valor);
         }
 
-        var cursos = await query.ToListAsync();
+        var cursos = await query
+            .Include(course => course.Category)
+            .ToListAsync();
 
         return Ok(new
         {
             total = cursos.Count,
-            resultados = cursos
+            resultados = cursos.Select(ToApiCourse)
         });
     }
 
@@ -59,6 +61,7 @@ public class CoursesController(CecursosDbContext context) : ControllerBase
     {
         var curso = await context.Courses
             .AsNoTracking()
+            .Include(course => course.Category)
             .FirstOrDefaultAsync(c => c.Id == id);
 
         if (curso is null)
@@ -69,6 +72,25 @@ public class CoursesController(CecursosDbContext context) : ControllerBase
             });
         }
 
-        return Ok(curso);
+        return Ok(ToApiCourse(curso));
     }
+
+    private static object ToApiCourse(CourseViewModel course) => new
+    {
+        course.Id,
+        course.FullName,
+        course.ShortName,
+        course.Description,
+        course.Modules,
+        course.LessonDescriptions,
+        Category = course.Category.Name,
+        IconImage = course.Category.IconImage,
+        CategoryChipColor = course.Category.ChipColor,
+        course.Modality,
+        course.Workload,
+        course.TargetAudience,
+        course.Status,
+        course.PresentationImage,
+        course.AvailabilityDate
+    };
 }

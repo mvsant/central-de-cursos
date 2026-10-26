@@ -8,9 +8,8 @@ public class CourseViewModel
         public string Description { get; set; } = string.Empty;    // Descrição
         public string Modules { get; set; } = string.Empty;
         public string LessonDescriptions { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;       // Categoria (Min 3 total in DB)
-        public string IconImage { get; set; } = string.Empty;
-        public string CategoryChipColor { get; set; } = string.Empty;
+        public int CategoryId { get; set; }
+        public CourseCategory Category { get; set; } = null!;
         public string Modality { get; set; } = string.Empty;       // Modalidade (Min 2 total in DB)
         public int Workload { get; set; }                          // Carga horária
         public string TargetAudience { get; set; } = string.Empty; // Público-alvo
